@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+/BirthdayNotifier/BirthdayNotifier.Api/appsettings.json
+/BirthdayNotifier/BirthdayNotifier.Api/appsettings.Development.json
