@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Api", "BirthdayNotifier.Api\BirthdayNotifier.Api.csproj", "{F4955969-64B7-4404-984B-82A0B3D952E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Core", "BirthdayNotifier.Core\BirthdayNotifier.Core.csproj", "{06C8C384-5BBD-4D7F-A533-0CD3A1B57E5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Infrastructure", "BirthdayNotifier.Infrastructure\BirthdayNotifier.Infrastructure.csproj", "{0C166596-63E3-4FA8-AEF5-54138E3B371A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4955969-64B7-4404-984B-82A0B3D952E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4955969-64B7-4404-984B-82A0B3D952E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4955969-64B7-4404-984B-82A0B3D952E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4955969-64B7-4404-984B-82A0B3D952E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06C8C384-5BBD-4D7F-A533-0CD3A1B57E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C8C384-5BBD-4D7F-A533-0CD3A1B57E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C8C384-5BBD-4D7F-A533-0CD3A1B57E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C8C384-5BBD-4D7F-A533-0CD3A1B57E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
