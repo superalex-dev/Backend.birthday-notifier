@@ -1,12 +1,14 @@
 ﻿using BirthdayNotifier.Core.DTOs;
 using BirthdayNotifier.Core.Interfaces;
 using BirthdayNotifier.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirthdayNotifier.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _service;
