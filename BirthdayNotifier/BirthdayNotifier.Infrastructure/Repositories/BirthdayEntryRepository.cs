@@ -1,6 +1,6 @@
-﻿using BirthdayNotifier.Core.Interfaces;
+﻿using BirthdayNotifier.Core.DTOs;
 using BirthdayNotifier.Core.Interfaces.Repositories;
-using BirthdayNotifier.Core.Models;
+using BirthdayNotifier.Domain.Models;
 using BirthdayNotifier.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,49 +17,99 @@ public class BirthdayEntryRepository : IBirthdayEntryRepository
 
     public async Task<BirthdayEntry?> GetByIdAsync(Guid id)
     {
-        return await _context.BirthdayEntries
-            .Include(b => b.Group)
-            .ThenInclude(g => g.User)
-            .FirstOrDefaultAsync(b => b.Id == id);
+        var entity = await _context.BirthdayEntries.FindAsync(id);
+
+        if (entity == null)
+            return null;
+
+        return new BirthdayEntry
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DateOfBirth = entity.DateOfBirth,
+            GroupId = entity.GroupId
+        };
     }
+
 
     public async Task<IEnumerable<BirthdayEntry>> GetAllAsync()
     {
-        return await _context.BirthdayEntries
+        var entries = await _context.BirthdayEntries
             .Include(b => b.Group)
-            .ThenInclude(g => g.User)
+            .ThenInclude(g => g.ApplicationUser)
             .ToListAsync();
+
+        return entries.Select(entity => new BirthdayEntry
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DateOfBirth = entity.DateOfBirth,
+            GroupId = entity.GroupId
+        });
     }
 
     public async Task<IEnumerable<BirthdayEntry>> GetUpcomingAsync(int daysAhead)
     {
         var today = DateTime.Today;
+        var upcomingDates = Enumerable.Range(0, daysAhead + 1)
+            .Select(offset => today.AddDays(offset))
+            .Select(d => new { d.Month, d.Day })
+            .ToHashSet();
 
-        return await _context.BirthdayEntries
+        var entries = await _context.BirthdayEntries
             .Include(b => b.Group)
-            .ThenInclude(g => g.User)
-            .Where(b =>
-                b.DateOfBirth.Month == today.Month &&
-                b.DateOfBirth.Day == today.Day)
+            .ThenInclude(g => g.ApplicationUser)
             .ToListAsync();
+
+        var filtered = entries
+            .Where(b => upcomingDates.Contains(new { b.DateOfBirth.Month, b.DateOfBirth.Day }));
+
+        return filtered.Select(entity => new BirthdayEntry
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DateOfBirth = entity.DateOfBirth,
+            GroupId = entity.GroupId
+        });
     }
 
-    public async Task AddAsync(BirthdayEntry entry)
+    public async Task AddAsync(BirthdayEntry dto)
     {
-        await _context.BirthdayEntries.AddAsync(entry);
+        var entity = new BirthdayEntry
+        {
+            Id = dto.Id != Guid.Empty ? dto.Id : Guid.NewGuid(),
+            Name = dto.Name,
+            DateOfBirth = dto.DateOfBirth,
+            GroupId = dto.GroupId
+        };
+
+        await _context.BirthdayEntries.AddAsync(entity);
     }
 
-    public Task UpdateAsync(BirthdayEntry entry)
+
+    public Task UpdateAsync(BirthdayEntry dto)
     {
-        _context.BirthdayEntries.Update(entry);
+        var entity = new BirthdayEntry
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            DateOfBirth = dto.DateOfBirth,
+            GroupId = dto.GroupId
+        };
+
+        _context.BirthdayEntries.Update(entity);
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(BirthdayEntry entry)
+    public async Task DeleteByIdAsync(Guid id)
     {
-        _context.BirthdayEntries.Remove(entry);
-        return Task.CompletedTask;
+        var entity = await _context.BirthdayEntries.FindAsync(id);
+        if (entity != null)
+        {
+            _context.BirthdayEntries.Remove(entity);
+        }
     }
+
 
     public async Task SaveChangesAsync()
     {

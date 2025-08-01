@@ -2,10 +2,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BirthdayNotifier.Core\BirthdayNotifier.Core.csproj" />
+      <ProjectReference Include="..\BirthdayNotifier.Domain\BirthdayNotifier.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Hangfire.Core" Version="1.8.20" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.18" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
         <PrivateAssets>all</PrivateAssets>

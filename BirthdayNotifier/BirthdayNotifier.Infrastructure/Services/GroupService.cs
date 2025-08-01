@@ -1,7 +1,7 @@
 ﻿using BirthdayNotifier.Core.DTOs;
 using BirthdayNotifier.Core.Interfaces.Repositories;
 using BirthdayNotifier.Core.Interfaces.Services;
-using BirthdayNotifier.Core.Models;
+using BirthdayNotifier.Domain.Models;
 
 namespace BirthdayNotifier.Infrastructure.Services;
 

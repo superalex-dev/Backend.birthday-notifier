@@ -1,4 +1,4 @@
-﻿using BirthdayNotifier.Core.Models;
+﻿using BirthdayNotifier.Domain.Models;
 
 namespace BirthdayNotifier.Core.Interfaces.Repositories;
 

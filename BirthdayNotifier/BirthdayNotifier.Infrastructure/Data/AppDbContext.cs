@@ -1,14 +1,16 @@
-﻿using BirthdayNotifier.Core.Models;
+﻿using BirthdayNotifier.Domain.Identity;
+using BirthdayNotifier.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BirthdayNotifier.Infrastructure.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
 
-    public DbSet<User> Users => Set<User>();
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<BirthdayEntry> BirthdayEntries => Set<BirthdayEntry>();
 
@@ -16,16 +18,16 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<ApplicationUser>()
             .HasMany(u => u.Groups)
-            .WithOne(g => g.User)
+            .WithOne(g => g.ApplicationUser)
             .HasForeignKey(g => g.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-
+        
         modelBuilder.Entity<Group>()
-            .HasMany(g => g.Birthdays)
-            .WithOne(b => b.Group)
-            .HasForeignKey(b => b.GroupId)
+            .HasOne<ApplicationUser>()
+            .WithMany(u => u.Groups)
+            .HasForeignKey(g => g.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

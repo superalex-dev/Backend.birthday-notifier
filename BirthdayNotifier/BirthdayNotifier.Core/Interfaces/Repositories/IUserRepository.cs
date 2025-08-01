@@ -1,18 +1,22 @@
-﻿using BirthdayNotifier.Core.Models;
+﻿
+
+using BirthdayNotifier.Core.DTOs;
 
 namespace BirthdayNotifier.Core.Interfaces.Repositories;
 
+using BirthdayNotifier.Core.DTOs;
+
 public interface IUserRepository
 {
-    Task<User?> GetByIdAsync(Guid id);
+    Task<UserDto?> GetByIdAsync(Guid id);
 
-    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<UserDto>> GetAllAsync();
 
-    Task AddAsync(User user);
+    Task AddAsync(UserDto user);
 
-    Task UpdateAsync(User user);
+    Task UpdateAsync(UserDto user);
 
-    Task DeleteAsync(User user);
+    Task DeleteAsync(Guid id);
 
     Task SaveChangesAsync();
 }

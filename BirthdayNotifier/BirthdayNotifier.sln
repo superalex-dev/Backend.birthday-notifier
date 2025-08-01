@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Core", "Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Infrastructure", "BirthdayNotifier.Infrastructure\BirthdayNotifier.Infrastructure.csproj", "{0C166596-63E3-4FA8-AEF5-54138E3B371A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayNotifier.Domain", "BirthdayNotifier.Domain\BirthdayNotifier.Domain.csproj", "{A3DAFEB0-09A6-4B2E-BF83-F4D8D1274350}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C166596-63E3-4FA8-AEF5-54138E3B371A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3DAFEB0-09A6-4B2E-BF83-F4D8D1274350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3DAFEB0-09A6-4B2E-BF83-F4D8D1274350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3DAFEB0-09A6-4B2E-BF83-F4D8D1274350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3DAFEB0-09A6-4B2E-BF83-F4D8D1274350}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

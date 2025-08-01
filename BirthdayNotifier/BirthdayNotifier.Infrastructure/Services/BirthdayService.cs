@@ -1,8 +1,7 @@
 ﻿using BirthdayNotifier.Core.DTOs;
-using BirthdayNotifier.Core.Interfaces;
 using BirthdayNotifier.Core.Interfaces.Repositories;
 using BirthdayNotifier.Core.Interfaces.Services;
-using BirthdayNotifier.Core.Models;
+using BirthdayNotifier.Domain.Models;
 
 namespace BirthdayNotifier.Infrastructure.Services;
 
@@ -26,7 +25,7 @@ public class BirthdayService : IBirthdayService
         return entries.Select(e => new BirthdayEntryResponseDto
         {
             Id = e.Id,
-            PersonName = e.PersonName,
+            Name = e.Name,
             DateOfBirth = e.DateOfBirth,
             GroupName = e.Group.Name
         });
@@ -39,7 +38,7 @@ public class BirthdayService : IBirthdayService
         return entries.Select(e => new BirthdayEntryResponseDto
         {
             Id = e.Id,
-            PersonName = e.PersonName,
+            Name = e.Name,
             DateOfBirth = e.DateOfBirth,
             GroupName = e.Group.Name
         });
@@ -54,7 +53,7 @@ public class BirthdayService : IBirthdayService
         var entry = new BirthdayEntry
         {
             Id = Guid.NewGuid(),
-            PersonName = dto.PersonName,
+            Name = dto.Name,
             DateOfBirth = dto.DateOfBirth,
             GroupId = dto.GroupId
         };
@@ -69,7 +68,7 @@ public class BirthdayService : IBirthdayService
         if (entry == null)
             throw new Exception("Birthday entry not found");
 
-        entry.PersonName = dto.PersonName;
+        entry.Name = dto.Name;
         entry.DateOfBirth = dto.DateOfBirth;
         entry.GroupId = dto.GroupId;
 
@@ -83,7 +82,7 @@ public class BirthdayService : IBirthdayService
         if (entry == null)
             throw new Exception("Birthday entry not found");
 
-        await _birthdayRepo.DeleteAsync(entry);
+        await _birthdayRepo.DeleteByIdAsync(entry.Id);
         await _birthdayRepo.SaveChangesAsync();
     }
 }

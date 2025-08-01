@@ -1,10 +1,8 @@
-﻿using BirthdayNotifier.Core.Interfaces;
+﻿using BirthdayNotifier.Core.DTOs;
 using BirthdayNotifier.Core.Interfaces.Repositories;
-using BirthdayNotifier.Core.Models;
+using BirthdayNotifier.Domain.Identity;
 using BirthdayNotifier.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-
-namespace BirthdayNotifier.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
@@ -15,35 +13,75 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User?> GetByIdAsync(Guid id)
+    public async Task<UserDto?> GetByIdAsync(Guid id)
     {
-        return await _context.Users
+        var user = await _context.Users
             .Include(u => u.Groups)
             .ThenInclude(g => g.Birthdays)
             .FirstOrDefaultAsync(u => u.Id == id);
+
+        return user is null
+            ? null
+            : new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Topic = user.Topic
+            };
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
-        return await _context.Users
+        var users = await _context.Users
             .Include(u => u.Groups)
             .ThenInclude(g => g.Birthdays)
             .ToListAsync();
+
+        return users.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Email = u.Email,
+            Topic = u.Topic
+        });
     }
 
-    public async Task AddAsync(User user) => await _context.Users.AddAsync(user);
-
-    public Task UpdateAsync(User user)
+    public async Task AddAsync(UserDto dto)
     {
-        _context.Users.Update(user);
+        var entity = new ApplicationUser
+        {
+            Id = dto.Id,
+            Email = dto.Email,
+            Topic = dto.Topic,
+            UserName = dto.Email,
+            NormalizedEmail = dto.Email.ToUpper(),
+            NormalizedUserName = dto.Email.ToUpper()
+        };
+
+        await _context.Users.AddAsync(entity);
+    }
+
+    public Task UpdateAsync(UserDto dto)
+    {
+        var entity = new ApplicationUser
+        {
+            Id = dto.Id,
+            Email = dto.Email,
+            Topic = dto.Topic,
+            UserName = dto.Email,
+            NormalizedEmail = dto.Email.ToUpper(),
+            NormalizedUserName = dto.Email.ToUpper()
+        };
+
+        _context.Users.Update(entity);
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(User user)
+    public async Task DeleteAsync(Guid id)
     {
-        _context.Users.Remove(user);
-        return Task.CompletedTask;
+        var user = await _context.Users.FindAsync(id);
+        if (user != null)
+            _context.Users.Remove(user);
     }
 
-    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+    public Task SaveChangesAsync() => _context.SaveChangesAsync();
 }

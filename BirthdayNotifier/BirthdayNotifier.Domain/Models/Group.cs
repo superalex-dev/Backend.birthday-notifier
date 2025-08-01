@@ -1,4 +1,6 @@
-﻿namespace BirthdayNotifier.Core.Models;
+﻿using BirthdayNotifier.Domain.Identity;
+
+namespace BirthdayNotifier.Domain.Models;
 
 public class Group
 {
@@ -6,7 +8,8 @@ public class Group
     public string Name { get; set; } = null!;
     
     public Guid UserId { get; set; }
-    public User User { get; set; } = null!;
+    
+    public ApplicationUser ApplicationUser { get; set; } = null!;
 
     public ICollection<BirthdayEntry> Birthdays { get; set; } = new List<BirthdayEntry>();
 }

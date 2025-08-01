@@ -1,6 +1,5 @@
-﻿using BirthdayNotifier.Core.Interfaces;
-using BirthdayNotifier.Core.Interfaces.Repositories;
-using BirthdayNotifier.Core.Models;
+﻿using BirthdayNotifier.Core.Interfaces.Repositories;
+using BirthdayNotifier.Domain.Models;
 using BirthdayNotifier.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +16,12 @@ public class GroupRepository : IGroupRepository
 
     public async Task<Group?> GetByIdAsync(Guid id)
     {
-        return await _db.Groups.Include(g => g.User).FirstOrDefaultAsync(g => g.Id == id);
+        return await _db.Groups.Include(g => g.ApplicationUser).FirstOrDefaultAsync(g => g.Id == id);
     }
 
     public async Task<IEnumerable<Group>> GetAllAsync()
     {
-        return await _db.Groups.Include(g => g.User).ToListAsync();
+        return await _db.Groups.Include(g => g.ApplicationUser).ToListAsync();
     }
 
     public async Task AddAsync(Group group)

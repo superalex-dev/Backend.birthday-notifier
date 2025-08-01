@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BirthdayNotifier.Domain\BirthdayNotifier.Domain.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.18" />
     </ItemGroup>
 
 </Project>

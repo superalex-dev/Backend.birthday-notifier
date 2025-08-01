@@ -1,4 +1,7 @@
-﻿using BirthdayNotifier.Core.Models;
+﻿
+
+using BirthdayNotifier.Core.DTOs;
+using BirthdayNotifier.Domain.Models;
 
 namespace BirthdayNotifier.Core.Interfaces.Repositories;
 
@@ -9,6 +12,6 @@ public interface IBirthdayEntryRepository
     Task<IEnumerable<BirthdayEntry>> GetUpcomingAsync(int daysAhead);
     Task AddAsync(BirthdayEntry entry);
     Task UpdateAsync(BirthdayEntry entry);
-    Task DeleteAsync(BirthdayEntry entry);
+    Task DeleteByIdAsync(Guid id);
     Task SaveChangesAsync();
 }

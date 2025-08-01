@@ -1,5 +1,4 @@
-﻿using BirthdayNotifier.Core.Interfaces;
-using BirthdayNotifier.Core.Interfaces.Repositories;
+﻿using BirthdayNotifier.Core.Interfaces.Repositories;
 using BirthdayNotifier.Core.Interfaces.Services;
 
 namespace BirthdayNotifier.Api.Hangfire.Jobs;
@@ -31,7 +30,7 @@ public class BirthdayReminderJob
 
         foreach (var entry in upcoming)
         {
-            var message = $"🎂 {entry.PersonName} има рожден ден на {entry.DateOfBirth:dd MMMM}!";
+            var message = $"🎂 {entry.Name} има рожден ден на {entry.DateOfBirth:dd MMMM}!";
             var topic = $"birthdays-{entry.Group.UserId}";
 
             await _notificationService.SendNotificationAsync(topic, message);
