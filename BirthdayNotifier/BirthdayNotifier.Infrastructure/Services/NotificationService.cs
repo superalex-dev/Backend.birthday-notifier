@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using BirthdayNotifier.Core.Interfaces;
+﻿using System.Text;
 using BirthdayNotifier.Core.Interfaces.Services;
 using BirthdayNotifier.Infrastructure.Options;
 using Microsoft.Extensions.Logging;
@@ -22,19 +21,10 @@ public class NtfyNotificationService : INotificationService
 
     public async Task SendNotificationAsync(string topic, string message)
     {
-        var url = $"{_options.BaseUrl.TrimEnd('/')}/{topic}";
+        var url = $"{_options.BaseUrl}/{topic}";
 
-        var content = new StringContent(message);
+        var content = new StringContent(message, Encoding.UTF8, "text/plain");
 
-        if (!string.IsNullOrEmpty(_options.AuthorizationToken))
-        {
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", _options.AuthorizationToken);
-        }
-
-        var response = await _httpClient.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
-
-        _logger.LogInformation("✅ Sent ntfy message to topic {Topic}", topic);
+        await _httpClient.PostAsync(url, content);
     }
 }

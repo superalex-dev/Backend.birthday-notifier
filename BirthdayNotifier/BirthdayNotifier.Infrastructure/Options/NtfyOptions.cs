@@ -2,6 +2,7 @@
 
 public class NtfyOptions
 {
-    public string BaseUrl { get; set; } = "https://ntfy.sh";
-    public string? AuthorizationToken { get; set; }
+    public string BaseUrl { get; set; }
+
+    public string DefaultTopicPrefix { get; set; }
 }
