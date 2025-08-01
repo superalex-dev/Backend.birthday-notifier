@@ -1,7 +1,5 @@
 ﻿
 
-using BirthdayNotifier.Core.DTOs;
-
 namespace BirthdayNotifier.Core.Interfaces.Repositories;
 
 using BirthdayNotifier.Core.DTOs;

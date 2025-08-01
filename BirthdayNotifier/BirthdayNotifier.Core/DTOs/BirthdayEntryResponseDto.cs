@@ -1,6 +1,4 @@
-﻿using BirthdayNotifier.Domain.Models;
-
-namespace BirthdayNotifier.Core.DTOs;
+﻿namespace BirthdayNotifier.Core.DTOs;
 
 public class BirthdayEntryResponseDto
 {

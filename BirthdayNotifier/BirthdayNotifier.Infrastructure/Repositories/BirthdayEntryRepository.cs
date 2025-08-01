@@ -1,5 +1,4 @@
-﻿using BirthdayNotifier.Core.DTOs;
-using BirthdayNotifier.Core.Interfaces.Repositories;
+﻿using BirthdayNotifier.Core.Interfaces.Repositories;
 using BirthdayNotifier.Domain.Models;
 using BirthdayNotifier.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Hangfire.Dashboard;
+﻿using Hangfire.Dashboard;
 
 namespace BirthdayNotifier.Infrastructure.Hangfire;
 
