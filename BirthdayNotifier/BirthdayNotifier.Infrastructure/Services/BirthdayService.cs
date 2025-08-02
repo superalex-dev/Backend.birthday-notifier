@@ -7,20 +7,20 @@ namespace BirthdayNotifier.Infrastructure.Services;
 
 public class BirthdayService : IBirthdayService
 {
-    private readonly IBirthdayEntryRepository _birthdayRepo;
-    private readonly IGroupRepository _groupRepo;
+    private readonly IBirthdayEntryRepository _birthdayRepository;
+    private readonly IGroupRepository _groupRepository;
 
     public BirthdayService(
-        IBirthdayEntryRepository birthdayRepo,
-        IGroupRepository groupRepo)
+        IBirthdayEntryRepository birthdayRepository,
+        IGroupRepository groupRepository)
     {
-        _birthdayRepo = birthdayRepo;
-        _groupRepo = groupRepo;
+        _birthdayRepository = birthdayRepository;
+        _groupRepository = groupRepository;
     }
 
     public async Task<IEnumerable<BirthdayEntryResponseDto>> GetAllAsync()
     {
-        var entries = await _birthdayRepo.GetAllAsync();
+        var entries = await _birthdayRepository.GetAllAsync();
 
         return entries.Select(e => new BirthdayEntryResponseDto
         {
@@ -33,7 +33,7 @@ public class BirthdayService : IBirthdayService
 
     public async Task<IEnumerable<BirthdayEntryResponseDto>> GetTodaysBirthdaysAsync()
     {
-        var entries = await _birthdayRepo.GetUpcomingAsync(0);
+        var entries = await _birthdayRepository.GetUpcomingAsync(0);
 
         return entries.Select(e => new BirthdayEntryResponseDto
         {
@@ -46,7 +46,7 @@ public class BirthdayService : IBirthdayService
     
     public async Task<IEnumerable<BirthdayEntryResponseDto>> GetWeeklyBirthdaysAsync()
     {
-        var entries = await _birthdayRepo.GetUpcomingAsync(7);
+        var entries = await _birthdayRepository.GetUpcomingAsync(7);
         return entries.Select(e => new BirthdayEntryResponseDto
         {
             Id = e.Id,
@@ -58,7 +58,7 @@ public class BirthdayService : IBirthdayService
 
     public async Task<IEnumerable<BirthdayEntryResponseDto>> GetMonthlyBirthdaysAsync()
     {
-        var entries = await _birthdayRepo.GetUpcomingAsync(30);
+        var entries = await _birthdayRepository.GetUpcomingAsync(30);
         return entries.Select(e => new BirthdayEntryResponseDto
         {
             Id = e.Id,
@@ -70,7 +70,7 @@ public class BirthdayService : IBirthdayService
 
     public async Task AddAsync(BirthdayEntryDto dto)
     {
-        var group = await _groupRepo.GetByIdAsync(dto.GroupId);
+        var group = await _groupRepository.GetByIdAsync(dto.GroupId);
         if (group == null)
         {
             throw new Exception("Group not found");
@@ -85,13 +85,13 @@ public class BirthdayService : IBirthdayService
             GroupId = dto.GroupId
         };
 
-        await _birthdayRepo.AddAsync(entry);
-        await _birthdayRepo.SaveChangesAsync();
+        await _birthdayRepository.AddAsync(entry);
+        await _birthdayRepository.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Guid id, BirthdayEntryDto dto)
     {
-        var entry = await _birthdayRepo.GetByIdAsync(id);
+        var entry = await _birthdayRepository.GetByIdAsync(id);
         if (entry == null)
             throw new Exception("Birthday entry not found");
 
@@ -99,17 +99,17 @@ public class BirthdayService : IBirthdayService
         entry.DateOfBirth = dto.DateOfBirth;
         entry.GroupId = dto.GroupId;
 
-        await _birthdayRepo.UpdateAsync(entry);
-        await _birthdayRepo.SaveChangesAsync();
+        await _birthdayRepository.UpdateAsync(entry);
+        await _birthdayRepository.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        var entry = await _birthdayRepo.GetByIdAsync(id);
+        var entry = await _birthdayRepository.GetByIdAsync(id);
         if (entry == null)
             throw new Exception("Birthday entry not found");
 
-        await _birthdayRepo.DeleteByIdAsync(entry.Id);
-        await _birthdayRepo.SaveChangesAsync();
+        await _birthdayRepository.DeleteByIdAsync(entry.Id);
+        await _birthdayRepository.SaveChangesAsync();
     }
 }
