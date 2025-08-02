@@ -50,26 +50,18 @@ public class BirthdayEntryRepository : IBirthdayEntryRepository
     public async Task<IEnumerable<BirthdayEntry>> GetUpcomingAsync(int daysAhead)
     {
         var today = DateTime.Today;
-        var upcomingDates = Enumerable.Range(0, daysAhead + 1)
-            .Select(offset => today.AddDays(offset))
-            .Select(d => new { d.Month, d.Day })
-            .ToHashSet();
+        var endDate = today.AddDays(daysAhead);
 
-        var entries = await _context.BirthdayEntries
-            .Include(b => b.Group)
+        return await _context.BirthdayEntries
+            .Include(be => be.Group)
             .ThenInclude(g => g.ApplicationUser)
+            .Where(be =>
+                (be.DateOfBirth.Month == today.Month && be.DateOfBirth.Day >= today.Day) ||
+                (be.DateOfBirth.Month == endDate.Month && be.DateOfBirth.Day <= endDate.Day) ||
+                (be.DateOfBirth.Month > today.Month && be.DateOfBirth.Month < endDate.Month) ||
+                (today.Month > endDate.Month && (be.DateOfBirth.Month >= today.Month || be.DateOfBirth.Month <= endDate.Month))
+            )
             .ToListAsync();
-
-        var filtered = entries
-            .Where(b => upcomingDates.Contains(new { b.DateOfBirth.Month, b.DateOfBirth.Day }));
-
-        return filtered.Select(entity => new BirthdayEntry
-        {
-            Id = entity.Id,
-            Name = entity.Name,
-            DateOfBirth = entity.DateOfBirth,
-            GroupId = entity.GroupId
-        });
     }
 
     public async Task AddAsync(BirthdayEntry dto)

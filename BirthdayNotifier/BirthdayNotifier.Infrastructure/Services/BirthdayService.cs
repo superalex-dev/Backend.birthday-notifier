@@ -72,8 +72,11 @@ public class BirthdayService : IBirthdayService
     {
         var group = await _groupRepo.GetByIdAsync(dto.GroupId);
         if (group == null)
+        {
             throw new Exception("Group not found");
 
+        }
+        
         var entry = new BirthdayEntry
         {
             Id = Guid.NewGuid(),
