@@ -7,12 +7,19 @@ public static class JobsResolver
 {
     public static void AddJobs()
     {
-        var options = new RecurringJobOptions { TimeZone = TimeZoneInfo.Local };
+        RecurringJob.AddOrUpdate<BirthdayReminderJob>(
+            "daily-birthdays",
+            job => job.RunDailyAsync(CancellationToken.None),
+            Cron.Daily);
 
         RecurringJob.AddOrUpdate<BirthdayReminderJob>(
-            "send-birthday-reminders",
-            job => job.RunAsync(CancellationToken.None),
-            "0 7 * * *",
-            options);
+            "weekly-birthdays",
+            job => job.RunWeeklyAsync(CancellationToken.None),
+            Cron.Weekly);
+
+        RecurringJob.AddOrUpdate<BirthdayReminderJob>(
+            "monthly-birthdays",
+            job => job.RunMonthlyAsync(CancellationToken.None),
+            Cron.Monthly);
     }
 }

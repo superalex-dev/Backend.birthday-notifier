@@ -43,6 +43,30 @@ public class BirthdayService : IBirthdayService
             GroupName = e.Group.Name
         });
     }
+    
+    public async Task<IEnumerable<BirthdayEntryResponseDto>> GetWeeklyBirthdaysAsync()
+    {
+        var entries = await _birthdayRepo.GetUpcomingAsync(7);
+        return entries.Select(e => new BirthdayEntryResponseDto
+        {
+            Id = e.Id,
+            Name = e.Name,
+            DateOfBirth = e.DateOfBirth,
+            GroupName = e.Group.Name
+        });
+    }
+
+    public async Task<IEnumerable<BirthdayEntryResponseDto>> GetMonthlyBirthdaysAsync()
+    {
+        var entries = await _birthdayRepo.GetUpcomingAsync(30);
+        return entries.Select(e => new BirthdayEntryResponseDto
+        {
+            Id = e.Id,
+            Name = e.Name,
+            DateOfBirth = e.DateOfBirth,
+            GroupName = e.Group.Name
+        });
+    }
 
     public async Task AddAsync(BirthdayEntryDto dto)
     {

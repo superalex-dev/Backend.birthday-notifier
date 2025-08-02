@@ -3,6 +3,7 @@ using BirthdayNotifier.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BirthdayNotifier.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BirthdayNotifier.Api.Controllers;
 
@@ -56,5 +57,15 @@ public class AuthController : ControllerBase
 
         var token = _jwtTokenService.GenerateToken(user);
         return Ok(new { Token = token });
+    }
+    
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [HttpGet("secure-test")]
+    public IActionResult SecureTest()
+    {
+        if (!User.Identity.IsAuthenticated)
+            return Unauthorized("No valid token");
+
+        return Ok("You are authorized");
     }
 }

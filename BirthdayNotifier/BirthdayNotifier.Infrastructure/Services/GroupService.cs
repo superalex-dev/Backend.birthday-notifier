@@ -20,19 +20,27 @@ public class GroupService : IGroupService
 
         return groups.Select(g => new GroupDto
         {
-            Id = g.Id,
             Name = g.Name,
-            UserId = g.UserId
+            UserId = g.ApplicationUserId
         });
     }
 
     public async Task AddAsync(GroupDto dto)
     {
+        var existingGroups = await _groupRepository.GetAllAsync();
+        var duplicate = existingGroups
+            .Any(g => g.ApplicationUserId == dto.UserId && g.Name.ToLower() == dto.Name.ToLower());
+
+        if (duplicate)
+        {
+            throw new InvalidOperationException("You already have a group with this name.");
+        }
+
         var group = new Group
         {
             Id = Guid.NewGuid(),
             Name = dto.Name,
-            UserId = dto.UserId
+            ApplicationUserId = dto.UserId
         };
 
         await _groupRepository.AddAsync(group);

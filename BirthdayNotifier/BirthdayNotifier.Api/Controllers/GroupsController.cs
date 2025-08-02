@@ -3,11 +3,11 @@ using BirthdayNotifier.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BirthdayNotifier.API.Controllers;
+namespace BirthdayNotifier.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(AuthenticationSchemes = "Bearer")]
 public class GroupsController : ControllerBase
 {
     private readonly IGroupService _service;

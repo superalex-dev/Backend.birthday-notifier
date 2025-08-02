@@ -1,5 +1,6 @@
 ﻿using BirthdayNotifier.Core.Interfaces.Repositories;
 using BirthdayNotifier.Core.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 
 namespace BirthdayNotifier.Api.Hangfire.Jobs;
 
@@ -22,21 +23,38 @@ public class BirthdayReminderJob
         _logger = logger;
     }
 
-    public async Task RunAsync(CancellationToken cancellationToken)
+    public async Task RunDailyAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("🔁 BirthdayReminderJob started at {Time}", DateTime.UtcNow);
+        await RunInternalAsync(daysAhead: 0, "🎉 Днешни рожденици", cancellationToken);
+    }
 
-        var upcoming = await _birthdayEntryRepository.GetUpcomingAsync(1);
+    public async Task RunWeeklyAsync(CancellationToken cancellationToken)
+    {
+        await RunInternalAsync(daysAhead: 7, "📆 Рожденици за седмицата", cancellationToken);
+    }
+
+    public async Task RunMonthlyAsync(CancellationToken cancellationToken)
+    {
+        await RunInternalAsync(daysAhead: 30, "🗓️ Рожденици за месеца", cancellationToken);
+    }
+
+    private async Task RunInternalAsync(int daysAhead, string title, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("🔁 BirthdayReminderJob started: {Title} at {Time}", title, DateTime.UtcNow);
+
+        var upcoming = await _birthdayEntryRepository.GetUpcomingAsync(daysAhead);
 
         foreach (var entry in upcoming)
         {
-            var message = $"🎂 {entry.Name} има рожден ден на {entry.DateOfBirth:dd MMMM}!";
-            var topic = $"birthdays-{entry.Group.UserId}";
+            var userId = entry.Group.ApplicationUserId;
+
+            var message = $"{title}: 🎂 {entry.Name} има рожден ден на {entry.DateOfBirth:dd MMMM}!";
+            var topic = $"birthdays-{userId}";
 
             await _notificationService.SendNotificationAsync(topic, message);
             _logger.LogInformation("✅ Sent notification to {Topic}: {Message}", topic, message);
         }
 
-        _logger.LogInformation("✅ BirthdayReminderJob finished");
+        _logger.LogInformation("✅ BirthdayReminderJob finished: {Title}", title);
     }
 }

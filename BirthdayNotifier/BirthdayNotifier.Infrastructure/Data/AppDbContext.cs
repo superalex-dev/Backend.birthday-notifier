@@ -21,13 +21,13 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
         modelBuilder.Entity<ApplicationUser>()
             .HasMany(u => u.Groups)
             .WithOne(g => g.ApplicationUser)
-            .HasForeignKey(g => g.UserId)
+            .HasForeignKey(g => g.ApplicationUserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         modelBuilder.Entity<Group>()
-            .HasOne<ApplicationUser>()
+            .HasOne(g => g.ApplicationUser)
             .WithMany(u => u.Groups)
-            .HasForeignKey(g => g.UserId)
+            .HasForeignKey(g => g.ApplicationUserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
